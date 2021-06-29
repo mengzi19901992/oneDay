@@ -5,6 +5,6 @@
  * radix 进制;基数;
  * doctype 声明;文档类型
  * micro tasks 微任务
- * 
+ * sprite 小精灵，小妖精;雪碧（商标名）
  * 
  */

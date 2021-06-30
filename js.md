@@ -151,5 +151,68 @@ function Person(name){
 var person1 = new Person('张三');
 ```
 
+## 5、简述一下原型 / 构造函数 / 实例
+* 原型(prototype): 一个简单的对象，用于实现对象的 属性继承。可以简单的理解成对象的爹。在 Firefox 和 Chrome 中，每个JavaScript对象中都包含一个__proto__(非标准)的属性指向它爹(该对象的原型)，可obj.__proto__进行访问。
+* 构造函数: 可以通过new来 新建一个对象的函数。
+* 实例: 通过构造函数和new创建出来的对象，便是实例。实例通过__proto__指向原型，通过constructor指向构造函数。
+这里来举个栗子，以Object为例
+```javascript
+//实例.__proto__ === 原型
+//原型(实例).constructor === 构造函数
+//构造函数.prototype === 原型
+const o = new Object();
+o.__proto__=== Object.prototype;//true
+Object.prototype.constructor === Object;//true
+o.constructor === Object;//true
+```
+得出如下结论：
+* 构造函数的prototype(Object.prototype)与实例的__proto__(o.__proto__)都指向原型
+* 实例的constructor(o.constructor)与原型的constructor(Object.prototype.constructor)都指向构造函数
+
+## 6、简述一下JS继承，并举例
+在 JS 中，继承通常指的便是 原型链继承，也就是通过指定原型，并可以通过原型链继承原型上的属性或者方法。
+* 最优化: 圣杯模式
+```javascript
+var inherit = (function(Target , Origin){
+    var F = function(){};
+    return function(Target , Origin){
+        F.prototype = Origin.prototype;
+        Target.prototype = new F();
+        Target.uber = Origin.prototype;//为了让我们知道Target真正继承自谁
+        Target.prototype.constructor = Target;//把Target的构造函数指向归位
+    }
+})();
+```
+* 使用 ES6 的语法糖 class / extends
+
+## 7、函数柯里化
+函数柯里化指的是将能够接收多个参数的函数转化为接收单一参数的函数，并且返回接收余下参数且返回结果的新函数的技术。
+函数柯里化的主要作用和特点就是参数复用、提前返回和延迟执行。
+在一个函数中，首先填充几个参数，然后再返回一个新的函数的技术，称为函数的柯里化。通常可用于在不侵入函数的前提下，为函数**预置通用参数**，供多次重复调用。
+```javascript
+const add = function add(x) {
+    return function (y) {
+        return x + y
+    }
+}
+const add1 = add(1)
+add1(2) === 3
+add1(20) === 21
+```
+
+## 8、箭头函数的特点
+```javascript
+function a() {
+    return () => {
+        return () => {
+            console.log(this)
+        }
+    }
+}
+console.log(a()()())//window
+```
+箭头函数其实是没有 this的，这个函数中的 this只取决于他外面的第一个不是箭头函数的函数的 this。在这个例子中，因为调用 a符合前面代码中的第一个情况，所以 this是 window。并且 this一旦绑定了上下文，就不会被任何代码改变。
+
+
 
 

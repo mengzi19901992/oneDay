@@ -77,7 +77,35 @@ class Example extends React.Component {
 //输出： 0 0 2 3
 ```
 
+## 6、Function._proto_(getPrototypeOf)是什么？
+获取一个对象的原型，在chrome中可以通过__proto__的形式，或者在ES6中可以通过Object.getPrototypeOf的形式。
 
+那么Function.proto是什么？也就是说Function由什么对象继承而来，我们来做如下判别。
+```javascript
+Function.__proto__==Object.prototype //false
+Function.__proto__==Function.prototype//true
+```
+我们发现Function的原型也是Function。
+我们用图可以来明确这个关系：
+![](./img/prototype.png)
 
-
-
+## 7、说说bind、call、apply 区别？
+call 和 apply 都是为了解决改变 this 的指向。作用都是相同的，只是传参的方式不同。
+除了第一个参数外，call 可以接收一个参数列表，apply 只接受一个参数数组。
+bind和其他两个方法作用也是一致的，只是该方法会返回一个函数。并且我们可以通过 bind实现柯里化。
+* 如何实现一个call函数
+```javascript
+Function.prototype.myCall = function (context) {
+  var context = context || window
+  // 给 context 添加一个属性
+  // getValue.call(a, 'yck', '24') => a.fn = getValue
+  context.fn = this
+  // 将 context 后面的参数取出来
+  var args = [...arguments].slice(1)
+  // getValue.call(a, 'yck', '24') => a.fn('yck', '24')
+  var result = context.fn(...args)
+  // 删除 fn
+  delete context.fn
+  return result
+}
+```

@@ -9,7 +9,7 @@
  * instance 实例;例子;事例
  * inherit 继承;接替(责任等);继任
  * uber 超级;极其
- * 
+ * ReferenceError 引用错误 reference 参考;查阅
  * 
  * 
  * 

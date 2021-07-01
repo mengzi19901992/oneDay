@@ -101,4 +101,109 @@ http传输的数据都是未加密的，也就是明文的，网景公司设置�
 当状态变更的时候，重新构造一棵新的对象树。然后用新的树和旧的树进行比较，记录两棵树差异
 把2所记录的差异应用到步骤1所构建的真正的DOM树上，视图就更新了。
 
+## 7、变量的赋值可以分为三个阶段
+创建变量，在内存中开辟空间
+初始化变量，将变量初始化为undefined
+真正赋值
+
+* 关于let、var和function：
+let的「创建」过程被提升了，但是初始化没有提升。
+var的「创建」和「初始化」都被提升了。
+function的「创建」「初始化」和「赋值」都被提升了。
+
+## 8、下面代码中什么时候会输出1？
+```javascript
+var a = ?;
+if(a == 1 && a == 2 && a == 3){
+     conso.log(1);
+}
+```
+因为==会进行隐式类型转换 所以我们重写toString方法就可以了
+```javascript
+var a = {
+  i: 1,
+  toString() {
+    return a.i++;
+  }
+}
+```
+
+## 9、下面代码输出的结果是什么？
+```javascript
+var a = {n: 1};
+var b = a;
+a.x = a = {n: 2};
+
+console.log(a.x)     
+console.log(b.x)
+//undefined {n:2}
+```
+首先，a和b同时引用了{n:2}对象，接着执行到a.x = a = {n：2}语句，尽管赋值是从右到左的没错，但是.的优先级比=要高，所以这里首先执行a.x，相当于为a（或者b）所指向的{n:1}对象新增了一个属性x，即此时对象将变为{n:1;x:undefined}。之后按正常情况，从右到左进行赋值，此时执行a ={n:2}的时候，a的引用改变，指向了新对象{n：2},而b依然指向的是旧对象。之后执行a.x = {n：2}的时候，并不会重新解析一遍a，而是沿用最初解析a.x时候的a，也即旧对象，故此时旧对象的x的值为{n：2}，旧对象为 {n:1;x:{n：2}}，它被b引用着。后面输出a.x的时候，又要解析a了，此时的a是指向新对象的a，而这个新对象是没有x属性的，故访问时输出undefined；而访问b.x的时候，将输出旧对象的x的值，即{n:2}。
+
+## 10、下面代码的输出是什么?
+```javascript
+function checkAge(data) {
+  if (data === { age: 18 }) {
+    console.log("You are an adult!");
+  } else if (data == { age: 18 }) {
+    console.log("You are still an adult.");
+  } else {
+    console.log(`Hmm.. You don't have an age I guess`);
+  }
+}
+
+checkAge({ age: 18 });//Hmm.. You don't have an age I guess
+```
+在比较相等性，原始类型通过它们的值进行比较，而对象通过它们的引用进行比较。JavaScript检查对象是否具有对内存中相同位置的引用。
+我们作为参数传递的对象和我们用于检查相等性的对象在内存中位于不同位置，所以它们的引用是不同的。
+
+## 11、下面代码的输出是什么?
+```javascript
+onst obj = { 1: "a", 2: "b", 3: "c" };
+const set = new Set([1, 2, 3, 4, 5]);
+
+obj.hasOwnProperty("1");//true
+obj.hasOwnProperty(1);//true
+set.has("1");//false
+set.has(1);//true
+```
+所有对象键（不包括Symbols）都会被存储为字符串，即使你没有给定字符串类型的键。这就是为什么obj.hasOwnProperty（'1'）也返回true。
+上面的说法不适用于Set。在我们的Set中没有“1”：set.has（'1'）返回false。它有数字类型1，set.has（1）返回true。
+
+## 12、下面代码的输出是什么?
+这题考察的是对象的键名的转换。
+对象的键名只能是字符串和 Symbol 类型。
+其他类型的键名会被转换成字符串类型。
+对象转字符串默认会调用 toString 方法。
+```javascript
+// example 1
+var a={}, b='123', c=123;
+a[b]='b';
+// c 的键名会被转换成字符串'123'，这里会把 b 覆盖掉。
+a[c]='c';  
+// 输出 c
+console.log(a[b]);
+
+// example 2
+var a={}, b=Symbol('123'), c=Symbol('123');  
+// b 是 Symbol 类型，不需要转换。
+a[b]='b';
+// c 是 Symbol 类型，不需要转换。任何一个 Symbol 类型的值都是不相等的，所以不会覆盖掉 b。
+a[c]='c';
+// 输出 b
+console.log(a[b]);
+
+// example 3
+var a={}, b={key:'123'}, c={key:'456'};  
+// b 不是字符串也不是 Symbol 类型，需要转换成字符串。
+// 对象类型会调用 toString 方法转换成字符串 [object Object]。
+a[b]='b';
+// c 不是字符串也不是 Symbol 类型，需要转换成字符串。
+// 对象类型会调用 toString 方法转换成字符串 [object Object]。这里会把 b 覆盖掉。
+a[c]='c';  
+// 输出 c
+console.log(a[b]);
+```
+
+
 

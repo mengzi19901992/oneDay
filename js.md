@@ -214,5 +214,10 @@ console.log(a()()())//window
 箭头函数其实是没有 this的，这个函数中的 this只取决于他外面的第一个不是箭头函数的函数的 this。在这个例子中，因为调用 a符合前面代码中的第一个情况，所以 this是 window。并且 this一旦绑定了上下文，就不会被任何代码改变。
 
 
+## 9、浏览器与Node的事件循环(Event Loop)有何区别?
+浏览器和 Node 环境下，microtask 任务队列的执行时机不同
+
+Node 端，microtask 在事件循环的各个阶段之间执行
+浏览器端，microtask 在事件循环的 macrotask 执行完之后执行
 
 

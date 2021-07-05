@@ -41,6 +41,15 @@ get请求类似于查找的过程，用户获取数据，可以不用每次都�
 post不同，post做的一般是修改和删除的工作，所以必须与数据库交互，所以不能使用缓存。因此get请求适合于请求缓存。
 
 ## 3、模块化发展历程
+什么是模块?
+* 将一个复杂的程序依据一定的规则(规范)封装成几个块(文件), 并进行组合在一起
+* 块的内部数据/实现是私有的, 只是向外部暴露一些接口(方法)与外部其它模块通信
+一个模块的组成
+* 数据--->内部的变量
+* 操作数据的行为--->内部的函数
+模块化
+* 编码时是按照模块一个一个编码的, 整个项目就是一个模块化的项目
+
 可从IIFE、AMD、CMD、CommonJS、UMD、webpack(require.ensure)、ES Module、<script type="module"> 这几个角度考虑。
 模块化主要是用来抽离公共代码，隔离作用域，避免变量冲突等。
 * IIFE：使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
@@ -204,6 +213,27 @@ a[c]='c';
 // 输出 c
 console.log(a[b]);
 ```
+
+## 13、ES Module和CommonJS的区别
+1.使用区别
+```javascript
+// 1-1：ES Module
+export let yyy = value2
+export default {xxx, yyy}
+import {xxx, yyy} from '模块名/模块相对路径'
+// 1-2：CommonJS
+exports.xxx = value
+module.exports = value
+var module = require('模块名/模块相对路径')
+```
+2.esm属于编译时加载，即静态加载。在编译阶段就能确定模块之间的依赖关系，以及输入和输出的变量。
+com属于运行时加载，只有在代码运行时，才能确定这些东西。esm的好处可以做到 tree shaking。
+3.esm可以加载模块的部分内容，com是加载模块的整个对象，再取到具体内容。但esm如果使用export default也是加载模块的整个对象的
+4.esm输出的是值的引用，com输出的是值的拷贝。
+5.esm属于编译时加载，无法做到运行时加载。有一个方案，使用import**函数**，完成运行时加载，也就是动态加载。
+import函数和require都是运行时加载，区别在于import是异步加载【返回一个promise】，require是同步加载。
+
+
 
 
 

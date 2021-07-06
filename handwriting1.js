@@ -9,3 +9,25 @@ function _new(){
     }
     return target;
 }
+//2.深度克隆
+function clone(origin){
+    let cloneObj;
+    if(typeof origin !== 'object'){
+        cloneObj = origin;
+    }else{
+        cloneObj = Array.isArray(origin)?[]:{};
+        for(let key in origin){
+            if(origin.hasOwnProperty(key)){
+                if(typeof origin[key] === 'object'){
+                    cloneObj[key] = clone(origin[key]);
+                }else{
+                    cloneObj[key] = origin[key];
+                }
+            }
+        }
+    }
+    return cloneObj;
+}
+
+
+

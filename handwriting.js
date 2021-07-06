@@ -37,9 +37,44 @@ const p = _new(Person,'lala');
 console.log(p instanceof Person);//true
 
 
+//2.深度克隆
+var obj = {
+    info: {
+        data: {
+            name: 'ceshi'
+        }
+    },
+    age: 26,
+    fn: function(){
+        console.log(222);
+    }
+}
 
+function clone(origin){
+    let cloneObj;
+    if(typeof origin !=='object'){
+        cloneObj = origin; 
+    }else{
+        cloneObj = Array.isArray(origin)?[]:{};
+        for(let key in origin){
+            //只针对对象自身的属性进行克隆，不对原型上的属性进行克隆
+            if(origin.hasOwnProperty(key)){
+                if(typeof origin[key] === 'object'){
+                    cloneObj[key] = clone(origin[key])
+                }else{
+                    cloneObj[key] = origin[key];
+                }
+            }
+        }
+    }
+    return cloneObj;
+}
 
-
+var cloneObj = clone(obj);
+obj.info.data.name = 'lala';
+obj.age = 25;
+console.log(obj);
+console.log(cloneObj);
 
 
 

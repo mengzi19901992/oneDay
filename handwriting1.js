@@ -29,5 +29,18 @@ function clone(origin){
     return cloneObj;
 }
 
-
+//3.instanceof
+function instance(left,right){
+    let prototype = right.prototype;
+    let proto = left.__proto__;
+    while(true){
+        if(proto === null){
+            return false;
+        }
+        if(proto === prototype){
+            return true;
+        }
+        proto = proto.__proto__;
+    }
+}
 

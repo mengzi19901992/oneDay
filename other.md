@@ -209,7 +209,39 @@ HTML中与javascript交互是通过事件驱动来实现的，例如鼠标点击
 addEventListener：addEventListener是DOM2 级事件新增的指定事件处理程序的操作，这个方法接收3个参数：要处理的事件名、作为事件处理程序的函数和一个布尔值。最后这个布尔值参数如果是true，表示在捕获阶段调用事件处理程序；如果是false，表示在冒泡阶段调用事件处理程序。
 IE只支持事件冒泡。
 
+## 12、页面加载
+* 加载一个资源的过程 / 从输入 url 到得到 html 的详细过程
+浏览器根据 DNS 服务器解析域名并得到域名的 IP 地址
+向这个 IP 服务器发送 http 请求
+服务器收到、处理并返回 http 请求
+浏览器得到返回内容
+* 浏览器渲染页面的过程
+根据 HTML 结构生成 DOM Tree (DOM 是文档对象模型)
+根据 CSS 生成 CSSOM (CSSOM 是 CSS 对象模型) (css 文件一般放在 head 标签里，减少重绘次数)
+将 DOM 和 CSSOM 整合形成 RenderTree
+根据 RenderTree 开始渲染和展示
+注意：(script 标签一般放在 body 末尾，不会阻塞 html 结构的生成，且脚本里可以获取到所有标签结构)，遇到 script 内联 js 代码时，会执行并阻塞渲染
+* window.onload 和 DOMContentLoaded 的区别
+window.onload(load 事件)：页面全部资源加载完才会执行，包括图片、视频等
+DOMContentLoaded：DOM 渲染完即可执行，此时图片、视频等可能还没有加载完
+注：DOMContentLoaded：jq 都是用这种方式来判断页面是否加载完
 
+* 性能优化
+多使用内存、缓存或者其他方法
+减少 CPU 计算、减少网络(I/O操作，即输入输出)
+静态资源的压缩合并、缓存
+使用 CDN 让资源加载更快
+使用 SSR 后端渲染，数据直接输出到 HTML 中
+注：CDN => 网站开启 CDN 加速之后，会将网站内容缓存到 CDN 节点服务器上，这个时候如果有访问的话，就会直接从 CDN 节点服务器返回网站数据，不需要再从源站调取数据
+*渲染优化
+CSS 放前面，JS 放后面
+懒加载 (图片懒加载、上拉加载)
+减少 DOM 操作，多个操作尽量合并在一起执行
+事件节流：如果持续触发事件，每隔一段时间，只执行一次事件
+尽早执行操作(如 DOMContentLoaded)
+DocumentFragment 不是真实 DOM 树的一部分，它的变化不会触发 DOM 树的（回流和重绘)，且不会导致性能等问题。
+注：document.createDocumentFragment 方法可以创建 DocumentFragment 作为一种占位符，暂时存放那些依次插入文档的节点
+DocumentFragment 节点插入文档树时，插入的不是 DocumentFragment 自身，而是它的所有子孙节点
 
 
 

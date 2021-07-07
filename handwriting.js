@@ -76,6 +76,37 @@ obj.age = 25;
 console.log(obj);
 console.log(cloneObj);
 
-
+//3.手写instanceof
+/**
+ * instanceof是通过原型链判断的，b instanceof B 沿着b的隐式原型链层层查找，查看是否有原型等于B.prototype
+ * 如果一直找到b的原型链顶端 null，仍没有找到等于B.prototype的原型，则返回false，否则返回true
+ */
+//left 实例对象 right 类
+function instance(left,right){
+    let prototype = right.prototype;
+    let proto = left.__proto__;
+    while(true){
+        if(proto===null){
+            return false;
+        }
+        if(proto===prototype){
+            return true;
+        }
+        proto = proto.__proto__;
+    }
+}
+class Animal {
+    constructor(){
+        this.type = 'animal';
+    }
+}
+class Animal2 {
+    constructor(){
+        this.type = 'animal2';
+    }
+}
+let animal = new Animal();
+console.log(instance(animal, Animal)); // true
+console.log(instance(animal, Animal2)); // false
 
 

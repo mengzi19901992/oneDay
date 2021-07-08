@@ -156,6 +156,8 @@ var person1 = new Person('张三');
 * 构造函数: 可以通过new来 新建一个对象的函数。
 * 实例: 通过构造函数和new创建出来的对象，便是实例。实例通过__proto__指向原型，通过constructor指向构造函数。
 这里来举个栗子，以Object为例
+__proto__隐式原型
+prototype显示原型
 ```javascript
 //实例.__proto__ === 原型
 //原型(实例).constructor === 构造函数
@@ -168,6 +170,14 @@ o.constructor === Object;//true
 得出如下结论：
 * 构造函数的prototype(Object.prototype)与实例的__proto__(o.__proto__)都指向原型
 * 实例的constructor(o.constructor)与原型的constructor(Object.prototype.constructor)都指向构造函数
+
+Function 既是构造函数又是实例【通过调用 Function 这个构造函数生成的】，由 Function 生成的实例对象隐式原型指向相应的构造函数的显示原型
+但 Function.__proto__ 或 Function.prototype 是对象，对象就必然最终由 Object 生成，所以 fnObj.__proto__ === Object.prototype
+```javascript 
+Function.__proto__ === Function.prototype; //true
+Function.__proto__.__proto__ === Object.prototype;//true
+Function.prototype.__proto__ === Object.prototype;//true
+```
 
 ## 6、简述一下JS继承，并举例
 在 JS 中，继承通常指的便是 原型链继承，也就是通过指定原型，并可以通过原型链继承原型上的属性或者方法。

@@ -12,6 +12,7 @@
  * ReferenceError 引用错误 reference 参考;查阅
  * microtask 微任务
  * macrotask 宏任务
+ * application 申请;请求;申请书;
  * 
  * 
  * 

@@ -13,6 +13,7 @@
  * microtask 微任务
  * macrotask 宏任务
  * application 申请;请求;申请书;
+ * primitive 原始的;
  * 
  * 
  * 

@@ -178,20 +178,57 @@ Function.__proto__ === Function.prototype; //true
 Function.__proto__.__proto__ === Object.prototype;//true
 Function.prototype.__proto__ === Object.prototype;//true
 ```
+## 5.1、原型，原型链总结
+__proto__作为不同对象之间的桥梁，用来指向创建它的构造函数的原型对象的
+![](./img/prototype1.png) 
+1、每个对象的__proto__都是指向它的构造函数的原型对象prototype的
+```javascript
+person.__proto__ === Person.prototype
+```
+2、构造函数是一个函数对象，是通过 Function构造器产生的
+```javascript
+Person.__proto__ === Function.prototype
+```
+3、原型对象本身是一个普通对象，而普通对象的构造函数都是Object
+```javascript
+Person.prototype.__proto__ === Object.prototype
+```
+4、所有的构造器都是函数对象，函数对象都是 Function构造产生的
+```javascript
+Object.__proto__ === Function.prototype
+```
+5、Object的原型对象也有__proto__属性指向null，null是原型链的顶端
+```javascript
+Object.prototype.__proto__ === null
+```
+总结：
+* 一切对象都是继承自Object对象，Object 对象直接继承根源对象null
+* 一切的函数对象（包括 Object 对象），都是继承自 Function 对象
+* Object 对象直接继承自 Function 对象
+* Function对象的__proto__会指向自己的原型对象，最终还是继承自Object对象
+![](./img/prototype2.png) 
 
 ## 6、简述一下JS继承，并举例
 在 JS 中，继承通常指的便是 原型链继承，也就是通过指定原型，并可以通过原型链继承原型上的属性或者方法。
-* 最优化: 圣杯模式
+* 最优化: 组合继承
 ```javascript
-var inherit = (function(Target , Origin){
-    var F = function(){};
-    return function(Target , Origin){
-        F.prototype = Origin.prototype;
-        Target.prototype = new F();
-        Target.uber = Origin.prototype;//为了让我们知道Target真正继承自谁
-        Target.prototype.constructor = Target;//把Target的构造函数指向归位
-    }
-})();
+function clone (parent, child) {
+    // 这里改用 Object.create 就可以减少组合继承中多进行一次构造的过程
+    child.prototype = Object.create(parent.prototype);
+    child.prototype.constructor = child;
+}
+function Parent() {
+    this.name = 'parent6';
+    this.play = [1, 2, 3];
+}
+Parent6.prototype.getName = function () {
+    return this.name;
+}
+function Child() {
+    Parent.call(this);
+    this.friends = 'child5';
+}
+clone(Parent, Child);
 ```
 * 使用 ES6 的语法糖 class / extends
 
@@ -229,5 +266,36 @@ console.log(a()()())//window
 
 Node 端，microtask 在事件循环的各个阶段之间执行
 浏览器端，microtask 在事件循环的 macrotask 执行完之后执行
+
+## 10、什么是闭包，应用场景？
+一个函数和对其周围状态的引用捆绑在一起，这样的组合就是闭包。闭包让你可以在一个内层函数中访问到其外层函数的作用域。
+使用场景：1、创建私有变量，2、延长变量的生命周期
+
+## 11、Javascript中的作用域
+作用域，即变量（变量作用域又称上下文）和函数能被访问的区域或集合。作用域决定了代码区块中变量和其他资源的可见性。
+作用域分为：
+* 全局作用域
+* 函数作用域
+* 块级作用域
+JavaScript 遵循的是词法作用域:词法作用域，又叫静态作用域，变量被创建时就确定好了，而非执行阶段确定的
+```javascript
+var a = 2;
+function foo(){
+    console.log(a)
+}
+function bar(){
+    var a = 3;
+    foo();
+}
+bar()//2
+//由于JavaScript遵循词法作用域，相同层级的 foo 和 bar 就没有办法访问到彼此块作用域中的变量，所以输出2
+```
+作用域链:当在Javascript中使用一个变量的时候，首先Javascript引擎会尝试在当前作用域下去寻找该变量，如果没找到，再到它的上层作用域寻找，以此类推直到找到该变量或是已经到了全局作用域
+
+## 12、this对象的理解
+在绝大多数情况下，函数的调用方式决定了 this 的值（运行时绑定），this 关键字是函数运行时自动生成的一个内部对象，只能在函数内部使用，总指向调用它的对象。
+箭头函数：箭头函语法，让我们在代码书写时就能确定 this 的指向（编译时绑定）。
+
+
 
 

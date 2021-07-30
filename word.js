@@ -15,7 +15,8 @@
  * application 申请;请求;申请书;
  * primitive 原始的;
  * scope 范围；能力
- * 
+ * phase 阶段
+ * capture 捕获;
  * 
  * 
  * 

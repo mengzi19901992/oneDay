@@ -10,7 +10,7 @@ console.log(person.__proto__.constructor === Person); // true
  * new 的执行过程
  * 1.创建一个新对象
  * 2.原型链链接
- * 3.将构造函数的作用域赋值给新对象
+ * 3.将构造函数的作用域赋值给新对象（将构造函数中的this绑定到新建的对象obj上）
  * 4.执行构造函数中的代码
  * 5.返回新对象
  */
@@ -32,6 +32,17 @@ function _new(){
     //5.返回新对象
     return target;
 }
+
+// function mynew(Func, ...args) {
+//     // 1.创建一个新对象
+//     const obj = {}
+//     // 2.新对象原型指向构造函数原型对象
+//     obj.__proto__ = Func.prototype
+//     // 3.将构建函数的this指向新对象
+//     let result = Func.apply(obj, args)
+//     // 4.根据返回值判断
+//     return result instanceof Object ? result : obj
+// }
 
 const p = _new(Person,'lala');
 console.log(p instanceof Person);//true

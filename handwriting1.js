@@ -9,6 +9,12 @@ function _new(){
     }
     return target;
 }
+function mynew(Func,...args){
+    const obj = {};
+    obj.__proto__ = Func.prototype;
+    let result = Func.apply(obj,args);
+    return result instanceof Object ? result : obj;
+}
 //2.深度克隆
 function clone(origin){
     let cloneObj;

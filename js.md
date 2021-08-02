@@ -345,3 +345,51 @@ removeEventListener(eventType, handler, useCapture)
 ```
 IE事件模型（基本不用）
 
+## 15、什么是事件代理？应用场景
+事件代理，通俗地来讲，就是把一个元素响应事件（click、keydown......）函数委托到另一个元素上
+事件委托，会把一个或者一组元素的事件委托到它的父层或者更外层元素上，真正绑定事件的是外层元素，而不是目标元素
+应用场景：大量的列表项，动态增加或删除列表项元素
+优点：减少整个页面所需的内存，提升整体性能；动态绑定，减少重复工作
+局限性：focus、blur事件没有冒泡机制，无法进行委托绑定；mousemove、mouseout这样的事件，虽然有事件冒泡，但是只能不断通过位置去计算定位，对性能消耗高，因此也是不适合于事件委托的
+
+## 16、typeof 与 instanceof 区别
+typeof 操作符返回一个字符串，表示未经计算的操作数的类型 
+instanceof 运算符用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上
+```javascript
+//模拟instanceof
+function instance(left,right){
+    let prototype = right.prototype;
+    let proto = left.__proto__;
+    while(true){
+        if(proto === null){
+            return false;
+        }
+        if(proto === prototype){
+            return true;
+        }
+        proto = proto.__proto__;
+    }
+}
+```
+typeof与instanceof都是判断数据类型的方法
+typeof会返回一个变量的基本类型，instanceof返回的是一个布尔值
+如果需要通用检测数据类型，可以采用Object.prototype.toString，调用该方法，统一返回格式“[object Xxx]”的字符串
+
+## 17、 JavaScript 中内存泄漏的几种情况
+内存泄漏（Memory leak）是在计算机科学中，由于疏忽或错误造成程序未能释放已经不再使用的内存
+* 垃圾回收机制
+标记清除：垃圾回收程序运行的时候，会标记内存中存储的所有变量。然后，它会将所有在上下文中的变量，以及被在上下文中的变量引用的变量的标记去掉。随后垃圾回收程序做一次内存清理，销毁带标记的所有值并收回它们的内存。
+引用计数：语言引擎有一张"引用表"，保存了内存里面所有的资源（通常是各种值）的引用次数。如果一个值的引用次数是0，就表示这个值不再用到了，因此可以将这块内存释放。
+* 常见内存泄露情况
+意外的全局变量、定时器、闭包（维持函数内局部变量）、没有清理对DOM元素的引用、包括使用事件监听addEventListener监听的时候
+
+
+
+
+
+
+
+
+
+
+

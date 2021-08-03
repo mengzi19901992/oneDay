@@ -2,12 +2,17 @@
 防抖:触发高频事件后n秒内函数只会执行一次，如果n秒内高频事件再次被触发，则重新计算时间
 * 每次触发事件时都取消之前的延时调用方法
 ```javascript
-function debounce(fn,time){
+function debounce(fn,time,immediate){
     let timeout = null;// 创建一个标记用来存放定时器的返回值
     return function(){
+        let context = this;
+        //immediate 首次立即执行
+        if(immediate&&!timeout){
+            fn.apply(context,arguments);
+        }
         clearTimeout(timeout);// 每当用户输入的时候把前一个 setTimeout clear 掉
         timeout = setTimeout(()=>{// 然后又创建一个新的 setTimeout
-            fn.apply(this,arguments);
+            fn.apply(context,arguments);
         },time)
     }
 }
@@ -18,10 +23,11 @@ function debounce(fn,time){
 function throttle(fn,time){
     let canRun = true; // 通过闭包保存一个标记
     return function(){
+        let context = this;
         if(!canRun) return;// 在函数开头判断标记是否为true，不为true则return
         canRun = false;// 立即设置为false
         setTimeout(()=>{
-            fn.apply(this,arguments);
+            fn.apply(context,arguments);
             canRun = true;// 最后在setTimeout执行完毕后再把标记设置为true
         },time)
     }

@@ -384,11 +384,65 @@ typeof会返回一个变量的基本类型，instanceof返回的是一个布尔�
 意外的全局变量、定时器、闭包（维持函数内局部变量）、没有清理对DOM元素的引用、包括使用事件监听addEventListener监听的时候
 
 
+## 18、函数式编程的理解？优缺点？
+函数式编程：简单来讲，就是要把过程逻辑写成函数，定义好输入参数，只关心它的输出结果
+纯函数：函数式编程旨在尽可能的提高代码的无状态性和不变性。要做到这一点，就要学会使用无副作用的函数，也就是纯函数
+高阶函数：就是以函数作为输入或者输出的函数被称为高阶函数
+柯里化：把一个多参数函数转化成一个嵌套的一元函数的过程
+```javascript
+// 多参数柯里化；
+const curry = function(fn){
+    return function curriedFn(...args){
+        if(args.length<fn.length){
+            return function(){
+                return curriedFn(...args.concat([...arguments]));
+            }
+        }
+        return fn(...args);
+    }
+}
+const fn = (x,y,z,a)=>x+y+z+a;
+const myfn = curry(fn);
+console.log(myfn(1)(2)(3)(1));
+```
+组合与管道：组合函数，目的是将多个函数组合成一个函数。compose执行是从右到左的。而管道函数，执行顺序是从左到右执行的
+```javascript
+function afn(a){
+    return a*2;
+}
+function bfn(b){
+    return b*3;
+}
+const compose = (a,b)=>c=>a(b(c));
+let myfn =  compose(afn,bfn);
+console.log( myfn(2));
+const compose = (...fns)=>val=>fns.reverse().reduce((fn0,fn1)=>fn1(fn0),val);//组合函数
+const pipe = (...fns)=>val=>fns.reduce((fn0,fn1)=>fn1(fn0),val);//管道函数
+```
+函数式优缺点
+优点：更好的管理状态、更简单的复用、更优雅的组合、减少代码量，提高维护性
+缺点：性能(过度包装)、资源占用、递归陷阱
 
+## 19、 JavaScript 数字精度丢失的问题
+计算机存储双精度浮点数需要先把十进制数转换为二进制的科学记数法的形式，然后计算机以自己的规则{符号位+(指数位+指数偏移量的二进制)+小数部分}存储二进制的科学记数法
 
+因为存储时有位数限制（64位），并且某些十进制的浮点数在转换为二进制数时会出现无限循环，会造成二进制的舍入操作(0舍1入)，当再转换为十进制时就造成了计算误差
 
-
-
+解决方案
+```javascript
+parseFloat(1.4000000000000001.toPrecision(12)) === 1.4  // True
+parseFloat(1.4000000000000001.toFixed(12)) === 1.4 // True
+/**
+ * 精确加法
+ */
+//把小数转成整数后再运算
+function add(num1, num2) {
+  const num1Digits = (num1.toString().split('.')[1] || '').length;
+  const num2Digits = (num2.toString().split('.')[1] || '').length;
+  const baseNum = Math.pow(10, Math.max(num1Digits, num2Digits));
+  return (num1 * baseNum + num2 * baseNum) / baseNum;
+}
+```
 
 
 

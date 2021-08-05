@@ -35,7 +35,13 @@ link可以通过rel="alternate stylesheet"指定候选样式
 @import必须在样式规则之前，可以在 css 文件中引用其他文件
 总体来说：link 优于@import
 
-
-
-
+## 4、CSS盒子模型的理解
+对一个文档进行布局（layout）的时候，浏览器的渲染引擎会根据CSS基础框盒模型（CSS basic box model），将所有元素表示为一个个矩形的盒子（box）
+一个盒子由四个部分组成：content、padding、border、margin
+```css
+box-sizing: content-box|border-box|inherit:
+```
+content-box 默认值，元素的 width/height 不包含padding，border，与标准盒子模型表现一致
+border-box 元素的 width/height 包含 padding，border，与怪异盒子模型表现一致
+inherit 指定 box-sizing 属性的值，应该从父元素继承
 

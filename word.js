@@ -17,6 +17,7 @@
  * scope 范围；能力
  * phase 阶段
  * capture 捕获;
+ * transparent 透明的;清澈的;
  * 
  * 
  * 

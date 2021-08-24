@@ -105,13 +105,28 @@ ViewModel
 流程图如下
 ![](./img/ViewModel.png) 
 
+## 5、new Vue()的data可以是函数或者对象，组件data只能是函数
+根实例对象data可以是对象也可以是函数（根实例是单例），不会产生数据污染情况。
+组件实例对象data必须为函数，目的是为了防止多个组件实例对象之间共用一个data，产生数据污染。采用函数的形式，initData时会将其作为工厂函数都会返回全新data对象。
 
+## 6、Vue中给对象添加新属性界面不刷新?
+vue2是用过Object.defineProperty实现数据响应式，但是我们为obj添加新属性的时候，却无法触发事件属性的拦截。
+解决方案：
+Vue.set() ：Vue.set( target, propertyName/index, value )
+Object.assign()：创建一个新的对象，合并原对象和混入对象的属性this.someObject = Object.assign({},this.someObject,{newProperty1:1,newProperty2:2 ...})
+$forcecUpdated()：迫使Vue 实例重新渲染，仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件
+* vue3是用过proxy实现数据响应式的，直接动态添加新属性仍可以实现数据响应式
 
+## 7、Vue中的$nextTick怎么理解?
+定义：在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+我们可以理解成，Vue 在更新 DOM 时是异步执行的。当数据发生变化，Vue将开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新。
+原理：
+把回调函数放入callbacks等待执行
+将执行函数放到微任务或者宏任务中
+事件循环到了微任务或者宏任务，执行函数依次执行callbacks中的回调
 
-
-
-
-
+## 8、列表组件中写 key，其作用是什么？
+key是给每一个vnode的唯一id，也是diff的一种优化策略，可以根据key，更准确， 更快的找到对应的vnode节点。
 
 
 

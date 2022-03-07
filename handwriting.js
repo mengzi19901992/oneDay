@@ -165,7 +165,17 @@ xhr.onreadystatechange = function(){
     }
 }
 
-
+//4、手写休眠
+function sleep(time) {
+    return new Promise((resolve,reject)=>{
+        setTimeout(resolve,time);
+    })
+}
+async function fn(){
+    await sleep(1000);
+    console.log(11)
+}
+fn();
 
 
 

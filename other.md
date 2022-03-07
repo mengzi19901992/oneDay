@@ -243,6 +243,35 @@ DocumentFragment 不是真实 DOM 树的一部分，它的变化不会触发 DOM
 注：document.createDocumentFragment 方法可以创建 DocumentFragment 作为一种占位符，暂时存放那些依次插入文档的节点
 DocumentFragment 节点插入文档树时，插入的不是 DocumentFragment 自身，而是它的所有子孙节点
 
+* 优化
+1.增加link标签，DNS预解析
+<link rel="dns-prefetch" href="//x.alicdn.com">
+DNS Prefetch 是一种DNS 预解析技术，当你浏览网页时，浏览器会在加载网页时对网页中的域名进行解析缓存，这样在你单击当前网页中的连接时就无需进行DNS 的解析，减少用户等待时间，提高用户体验。
+我们DNS 解析的时候，需要用域名去DNS 解析匹配  IP  ，这个是需要时间的，如果加了  dns-perfetch  呢，浏览器会记住（缓存）这个解析，直接就请求过去了，不需要再走DNS 解析。就是这么简单。
+
+
+
+
+
+
+
+
+
+
+
+事件冒泡和捕获:https://juejin.im/post/6844903834075021326
+js作用域的理解:https://juejin.im/post/6844903584891420679
+JavaScript执行机制 事件循环/微任务/宏任务:https://juejin.im/post/6844903638238756878
+JavaScript原型、原型链和继承:https://zhuanlan.zhihu.com/p/35790971
+Generator函数的语法:http://www.ruanyifeng.com/blog/2015/04/generator.html
+从浏览器多进程到JS单线程:https://mp.weixin.qq.com/s/vIKDUrbuxVNQMi_g_fiwUA
+
+
+
+
+
+
+
 
 
 

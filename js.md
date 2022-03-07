@@ -444,6 +444,113 @@ function add(num1, num2) {
 }
 ```
 
+## 20、事件冒泡与捕获
+事件冒泡：事件会从最内层的元素开始发生，一直向上传播，直到document对象。
+事件捕获：与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
+e.preventDefault();阻止默认事件
+e.stopPropagation();阻止冒泡
+
+## 21、js作用域的理解
+作用域，是指变量的生命周期
+全局变量：
+生命周期将存在于整个程序之内。
+能被程序中任何函数或者方法访问。
+函数作用域：
+函数作用域内，对外是封闭的，从外层的作用域无法直接访问函数内部的作用域
+块级作用域：
+let 和 const 关键字，创建块级作用域的条件是必须有一个 { } 包裹
+词法作用域：javascript采用的是静态作用域
+法作用域是指一个变量的可见性，当我们要使用声明的变量时：JS引擎总会从最近的一个域，向外层域查找
+动态作用域：
+在 JavaScript 中的仅存的应用动态作用域的地方：this 引用
+
+## 22、JavaScript执行机制 事件循环/微任务/宏任务
+● JavaScript是单线程的语言
+● Event Loop是javascript的执行机制
+事件循环:
+![](./img/enent-loop.png) 
+● 同步和异步任务分别进入不同的执行"场所"，同步的进入主线程，异步的进入Event Table(事件列表)并注册函数
+● 当指定的事情完成时，Event Table会将这个函数移入Event Queue。
+● 主线程内的任务执行完毕为空，会去Event Queue读取对应的函数，进入主线程执行。
+● 上述过程会不断重复，也就是常说的Event Loop(事件循环)。
+
+### 23、JavaScript原型、原型链和继承
+prototype 和 __proto__:
+● 每个对象都有一个__proto__属性，并且指向它的prototype原型对象
+● 每个构造函数都有一个prototype原型对象
+  ○ prototype原型对象里的constructor指向构造函数本身
+原型链:
+每个对象都有一个__proto__，它指向它的prototype原型对象，而prototype原型对象又具有一个自己的prototype原型对象，就这样层层往上直到一个对象的原型prototype为null,这个查询的路径就是原型链
+JavaScript 中的继承:
+```javascript
+function Person (name, age) {
+    this.name = name;
+    this.age = age;
+}
+// 方法定义再构造函数的原型上
+Person.prototype.getName = function () { console.log(this.name) };
+// 属性的继承
+function Teacher (name, age, subject){
+    Person.call(this,name,age);
+    this.subject = subject;
+}
+//方法继承
+Teacher.prototype = Object.create(Person.prototype);
+Teacher.prototype.constructor = Teacher;
+```
+
+## 24、Generator 
+Generator 函数就是一个封装的异步任务，或者说是异步任务的容器。异步操作需要暂停的地方，都用 yield 语句注明。
+Generator 函数的执行方法如下：
+```javascript
+function* gen(x){
+  var y = yield x + 2;
+  return y;
+}
+var g = gen(1);
+g.next() // { value: 3, done: false }
+g.next() // { value: undefined, done: true }
+```
+next 方法的作用是分阶段执行 Generator 函数。每次调用 next 方法，会返回一个对象，表示当前阶段的信息（ value 属性和 done 属性）。value 属性是 yield 语句后面表达式的值，表示当前阶段的值；done 属性是一个布尔值，表示 Generator 函数是否执行完毕，即是否还有下一个阶段。
+```javascript
+function* gen(x){
+  var y = yield x + 2;
+  return y;
+}
+var g = gen(1);
+g.next() // { value: 3, done: false }
+g.next(2) // { value: 2, done: true }
+```
+上面代码中，第一个 next 方法的 value 属性，返回表达式 x + 2 的值（3）。第二个 next 方法带有参数2，这个参数可以传入 Generator 函数，作为上个阶段异步任务的返回结果，被函数体内的变量 y 接收。因此，这一步的 value 属性，返回的就是2（变量 y 的值）。
+
+## 25、definedProperty 
+Object.definedProperty()方法会直接在一个对象上定义一个新的属性，或修改一个对象的现有属性，并返回此对象。
+Object.defineProperty(obj, prop, descriptor)
+obj:待修改的对象
+prop: 要修改(如果不存在即是新增)的属性.
+descriptor: 属性的属性描述符，也是需要重点关注的对象。
+支持两类描述符，只能二选一使用
+● 数据描述符
+```javascript
+{
+	configurable: false,//是否可以被删除
+	enumerable: false,//是否可以被枚举
+	value: undefined,//属性值
+	writable: false,//是否可以重新赋值
+}
+```
+● 存取描述符
+```javascript
+{
+  get: function() {
+	return 123;
+  },,
+  set: function(value) {
+    this._a = value;
+  },,
+}
+```
+
 
 
 

@@ -9,19 +9,23 @@ function Promise1 (fn) {
     self.onRejectCallback = [];
 
     function resolve (value) {
-        if(self.status === PENDING){
-            self.status = RESOLVE;
-            self.data = value;
-            self.onResolveCallback.forEach((cb) => cb(value));
-        }
+        setTimeout(() => {
+            if(self.status === PENDING){
+                self.status = RESOLVE;
+                self.data = value;
+                self.onResolveCallback.forEach((cb) => cb(value));
+            }
+        },0)
     }
 
     function reject (e){
-        if(self.status === PENDING){
-            self.status = REJECT;
-            self.data = e;
-            self.onRejectCallback.forEach((cb) => {cb(e)});
-        }
+        setTimeout(()=>{
+            if(self.status === PENDING){
+                self.status = REJECT;
+                self.data = e;
+                self.onRejectCallback.forEach((cb) => {cb(e)});
+            }
+        },0)
     }
 
     try{
@@ -88,117 +92,24 @@ Promise1.prototype.then = function(onResolve,onReject){
     }
 }
 
-let p = new Promise1(function(resolve,reject){
-    setTimeout(function(){
-        resolve(2)
-    },1000)
-}).then(function(val){
-    console.log(val);
-    return val
-}).then(function(val){
-    console.log(val);
-})
+// let p = new Promise1(function(resolve,reject){
+//     setTimeout(function(){
+//         resolve(2)
+//     },1000)
+// }).then(function(val){
+//     console.log(val);
+//     return val
+// }).then(function(val){
+//     console.log(val);
+// })
 
-
-
-
-
-function Promise2(fn) {
-    let self = this;
-    self.status = PENDING;
-    self.data = undefined;
-    self.onResolveCallback = [];
-    self.onRejectCallback = [];
-
-    function resolve(val){
-        if(self.status === PENDING){
-            self.status = RESOLVE;
-            self.data = val;
-            self.onResolveCallback.forEach((cb) => {cb(self.data)});
-        }
-    }
-
-    function reject(e){
-        if(self.status === PENDING){
-            self.status = REJECT;
-            self.data = e;
-            self.onRejectCallback.forEach((cb)=>{cb(self.data)});
-        }
-    }
-
-    try {
-        fn(resolve,reject);
-    }catch{
-        reject(this.data);
-    }
-}
-
-Promise2.prototype.then = function(onResolve,onReject){
-    let self = this;
-    if(self.status === PENDING){
-        return new Promise2(function(resolve,reject){
-            self.onResolveCallback.push(function(){
-                try{
-                    let x = onResolve(self.data);
-                    if(x instanceof Promise2){
-                        x.then(resolve,reject);
-                    }
-                    resolve(x);
-                }catch(e){
-                    reject(e)
-                }
-            })
-            self.onRejectCallback.push(function(resolve,reject){
-                try{
-                    let x = onReject(self.data);
-                    if(x instanceof Promise2){
-                        x.then(resolve,reject);
-                    }
-                    resolve(x);
-                }catch(e){
-                    reject(x)
-                }
-            })
-        })
-    }
-    if(self.status === RESOLVE){
-        return new Promise2(function(resolve,reject){
-            try{
-                let x = onResolve(self.data);
-                if(x instanceof Promise2){
-                    x.then(resolve,reject);
-                }
-                resolve(x);
-            }catch(e){
-                reject(x)
-            }
-        })
-    }
-    if(self.status === REJECT){
-        return new Promise2(function(resolve,reject){
-            try{
-                let x = onReject(self.data);
-                if(x instanceof Promise2){
-                    x.then(resolve,reject);
-                }
-                resolve(x);
-            }catch(e){
-                reject(x);
-            }
-        })
-    }
-}
-
-function fn (val){
-    return new Promise(function(resolve,reject){
-        setTimeout(()=>{
-            console.log(val)
-            resolve(val)
-        },1000)
-    })
-}
-fn(1).then(()=>{
-    return fn(2)
-}).then(()=>{
-    return fn(3)
-})
+const promise = new Promise1((resolve, reject) => {
+    console.log(1)
+    resolve()
+    console.log(2)
+  })
+  
+  promise.then(() => {
+    console.log(3)
+  })
+  console.log(4)

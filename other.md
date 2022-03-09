@@ -265,7 +265,7 @@ JavaScript执行机制 事件循环/微任务/宏任务:https://juejin.im/post/6
 JavaScript原型、原型链和继承:https://zhuanlan.zhihu.com/p/35790971
 Generator函数的语法:http://www.ruanyifeng.com/blog/2015/04/generator.html
 从浏览器多进程到JS单线程:https://mp.weixin.qq.com/s/vIKDUrbuxVNQMi_g_fiwUA
-
+chrome developer： https://developer.chrome.com/docs/devtools/
 
 
 

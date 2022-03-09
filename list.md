@@ -47,6 +47,26 @@ get请求类似于查找的过程，用户获取数据，可以不用每次都�
 post不同，post做的一般是修改和删除的工作，所以必须与数据库交互，所以不能使用缓存。因此get请求适合于请求缓存。
 
 ## 3、模块化发展历程
+CommonJS 模块是 Node.js 专用的，与 ES6 模块不兼容。
+语法上面，两者最明显的差异是，CommonJS 模块使用require()和module.exports，ES6 模块使用import和export
+commonJS用同步的方式加载模块 var math = require('./math');
+
+AMD规范采用异步方式加载模块，模块的加载不影响它后面语句的运行。
+首先我们需要引入require.js文件
+
+ES module import命令是编译阶段执行的，在代码运行之前。import命令会被 JavaScript 引擎静态分析，先于模块内的其他语句执行。
+import MyModual from './myModual';
+ES2020提案 引入import()函数，支持动态加载模块，import()返回一个 Promise 对象
+```javascript
+import(`./a.js`)
+  .then(module => {
+    
+  })
+  .catch(err => {
+    
+  });
+```
+
 什么是模块?
 * 将一个复杂的程序依据一定的规则(规范)封装成几个块(文件), 并进行组合在一起
 * 块的内部数据/实现是私有的, 只是向外部暴露一些接口(方法)与外部其它模块通信

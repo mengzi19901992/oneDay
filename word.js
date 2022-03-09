@@ -18,8 +18,9 @@
  * phase 阶段
  * capture 捕获;
  * transparent 透明的;清澈的;
- * 
- * 
+ * compile 编译，编写
+ * link 联接，联系 
+ * notify 通知
  * 
  * 
  * 

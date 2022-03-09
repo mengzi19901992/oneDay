@@ -174,9 +174,15 @@ div{
 }
 ```
 
-
-
-
+## 9.BFC
+BFC(Block Formatting Context)块级格式化上下文，是用于布局块级盒子的一块渲染区域。
+BFC是Web页面 CSS 视觉渲染的一部分，用于决定块盒子的布局及浮动相互影响范围的一个区域。
+触发
+1. 根元素，即HTML标签
+2. 浮动元素：float值为left、right
+3. overflow值不为 visible，为 auto、scroll、hidden
+4. display值为 inline-block、table-cell、table-caption、table、inline-table、flex、inline-flex、grid、inline-grid
+5. 定位元素：position值为 absolute、fixed
 
 
 

@@ -80,3 +80,29 @@ xhr.onreadystatechange = function(){
     }
 }
 
+
+
+
+//防抖
+function debounce(fn,time){
+    let timer =null;
+    return function () {
+        clearTimeout(timer)
+        timer = setTimeout(()=>{
+            fn.apply(this,arguments);
+        },time)
+    }
+}
+//节流，n秒执行一次，每次执行前判断是否执行中
+function throttle(fn,time) {
+    let onOf = false;//变量标记是否执行中
+    return function () {
+        if(!onOf){
+            onOf = true;
+            setTimeout(()=>{
+                fn.apply(this,arguments);
+                onOf = false
+            },time);
+        }
+    }
+}

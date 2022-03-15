@@ -1,3 +1,5 @@
+//https://programmercarl.com/
+
 //1.土豪招聘贴身保镖，为提高吸引力，设置了特殊的工资计划。第一天，保镖只能够得到100元的报酬；随后的两天中，每天会得到200元报酬；随后的三天中，每天会得到300元报酬……后续以此类推。
 // 请你帮忙编写一个程序，在给定天数内能够得到多少报酬。
 // 输入：天数；输出：累计报酬
@@ -246,3 +248,21 @@ var singleNumber = function(nums) {
 };
 
 
+// 11、给你一个链表的头节点 head ，判断链表中是否有环。
+
+// 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，
+// 评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
+// 如果链表中存在环 ，则返回 true 。 否则，返回 false 。
+
+// 使用快慢指针，快慢指针相遇，说明有环
+var hasCycle = function(head) {
+    let fast = head;//快指针
+    let slow = head;//慢指针
+    while(fast != null && fast.next != null){
+        slow = slow.next;
+        fast = fast.next.next;
+        //快慢指针相遇，说明有环
+        if(slow == fast) return true;
+    }
+    return false;
+};

@@ -4,6 +4,12 @@
 * 组件化通信的不同。react中我们通过使用回调函数来进行通信的，而Vue中子组件向父组件传递消息有两种方式：事件和回调函数
 * diff算法不同。react主要使用diff队列保存需要更新哪些DOM，得到patch树，再统一操作批量更新DOM。Vue 使用双向指针，边对比，边更新DOM
 
+## 1、 vue3.0你知道有哪些改进？
+vue3 采用了TS来编写
+支持 Composition API
+vue3 中响应式数据原理改成proxy
+vdom 的对比算法更新，只更新vdom 的绑定了动态数据的部分
+
 ## 2、路由hash 模式实现
 https://juejin.cn/post/6844903695365177352
 核心通过监听url中的hash来进行路由跳转

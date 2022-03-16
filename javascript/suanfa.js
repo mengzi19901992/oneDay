@@ -266,3 +266,279 @@ var hasCycle = function(head) {
     }
     return false;
 };
+
+
+// 12、给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
+// 输入: nums = [-1,0,3,5,9,12], target = 9     
+// 输出: 4       
+// 解释: 9 出现在 nums 中并且下标为 4
+// 二分查找，因为是有序且不重复数组，可以使用二分查找（区间）
+var search = function(nums,target){
+    let left = 0;//区间左下标
+    let right = nums.length-1;//区间右下标
+    while(left<=right){
+        let mid = left + Math.floor((right-left)/2);//找出区间中间下标
+        if(nums[mid]<target){//如果中间值小于target，证明target在中间值的右侧
+            //把区间左下标设置成中间值的右侧第一个
+            left = mid+1;
+        }else if(nums[mid]>target){//如果中间值大于target，证明target在中间值的左侧，则把区间右下标设置成中间值的左侧第一个
+            right = mid-1;
+        }else{
+            return mid;
+        }
+    }
+    return -1;
+}
+
+// 13、移除元素
+// 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+// 不要使用额外的数组空间，你必须仅使用 $O(1)$ 额外空间并原地修改输入数组。
+//1)这个题目暴力的解法就是两层for循环，一个for循环遍历数组元素 ，第二个for循环更新数组。
+var removeElement = function(nums,val){
+    let size = nums.length;
+    for(let i =0; i<size;i++){
+        if(nums[i]===val){
+            for(let j = i;j<size;j++){
+                nums[j] = nums[j+1];
+            }
+            i--; // 因为下标i以后的数值都向前移动了一位，所以i也向前移动一位
+            size--;// 此时数组的大小-1
+        }
+    }
+    return size;
+}
+//2)双指针法（快慢指针法）： 通过一个快指针和慢指针在一个for循环下完成两个for循环的工作。
+var removeElement = function(nums,val){
+    let slow = 0;//慢指针
+    //快指针
+    for(let fast = 0;fast<nums.length;fast++){
+        if(nums[fast]!==val){
+            nums[slow++] = nums[fast];
+        }
+    }
+    return slow;
+}
+
+
+//14、有序数组的平方
+// 给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
+
+// 示例 1： 输入：nums = [-4,-1,0,3,10] 输出：[0,1,9,16,100] 解释：平方后，数组变为 [16,1,0,9,100]，排序后，数组变为 [0,1,9,16,100]
+//1)先平方在排序
+var sortedSquares = function(nums){
+    for(let i=0;i<nums.length;i++){
+        num[i] = Math.pow(nums[i],2);
+    }
+    return nums.sort((a,b)=>a-b);
+}
+//2)双指针法
+// 数组其实是有序的， 只不过负数平方之后可能成为最大数了。
+// 那么数组平方的最大值就在数组的两端，不是最左边就是最右边，不可能是中间。
+// 此时可以考虑双指针法了，i指向起始位置，j指向终止位置。
+// 定义一个新数组result
+var sortedSquares = function(nums){
+    let i = 0,j = nums.length-1,arr = [];
+    while(i<=j){
+        if(Math.pow(nums[j],2)>Math.pow(nums[i],2)){
+            arr.unshift(Math.pow(nums[j],2));
+            j--;
+        }else{
+            arr.unshift(Math.pow(nums[i],2));
+            i++;
+        }
+    }
+    return arr;
+}
+
+
+//15、长度最小的子数组
+// 给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的 连续 子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。
+// 示例：
+// 输入：s = 7, nums = [2,3,1,2,4,3] 输出：2 解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+//1)两个for循环，然后不断的寻找符合条件的子序列
+var minSubArrayLen = function(nums,s){
+    let result = Infinity;
+    let sum = 0;
+    for(let i=0;i<nums.length;i++){
+        sum = 0;
+        for(let j = i;j<nums.length;j++){
+            sum += nums[j];
+            if(sum>=s){
+                result = Math.min(result,j-i+1);
+                break;
+            }
+        }
+    }
+    return result===Infinity?0:result;
+}
+//2)滑动窗口(双指针)
+var minSubArrayLen = function(nums,s){
+    let start = 0; // 滑动窗口起始位置
+    let result = Infinity;//滑动窗口长度
+    let sum = 0;//滑动窗口数值之和
+    for(let i=0;i<nums.length;i++){
+        sum+=nums[i];
+        while(sum>=s){
+            //取滑动窗口的长度
+            result = Math.min(result,i-start+1);
+            sum -= nums[start++];//这里体现出滑动窗口的精髓之处，不断变更start（子序列的起始位置）
+        }
+    }
+    return result===Infinity?0:result;
+}
+
+//16、螺旋矩阵II
+//https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html#%E6%80%9D%E8%B7%AF
+// 给定一个正整数 n，生成一个包含 1 到 $n^2$ 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
+// 示例:
+// 输入: 3 输出: [ [ 1, 2, 3 ], [ 8, 9, 4 ], [ 7, 6, 5 ] ]
+// [ 1, 2, 3 ]
+// [ 8, 9, 4 ]
+// [ 7, 6, 5 ]
+// 模拟顺时针画矩阵的过程:
+// 填充上行从左到右
+// 填充右列从上到下
+// 填充下行从右到左
+// 填充左列从下到上
+/**
+ * @param {number} n
+ * @return {number[[][]]}
+ */
+var generateMatrix = function(n) {
+    let startX = startY = 0;   // 起始位置
+    let loop = Math.floor(n/2);   // 旋转圈数
+    let mid = Math.floor(n/2);    // 中间位置
+    let offset = 1;    // 控制每一层少填充元素个数
+    let count = 1;     // 更新填充数字
+    //创建二维数组，填充0
+    let res = new Array(n).fill(0).map(() => new Array(n).fill(0));
+
+    while (loop--) {
+        let row = startX, col = startY;
+        // 上行从左到右（左闭右开）
+        for (; col < startY + n - offset; col++) {
+            res[row][col] = count++;
+        }
+        // 右列从上到下（左闭右开）
+        for (; row < startX + n - offset; row++) {
+            res[row][col] = count++;
+        }
+        // 下行从右到左（左闭右开）
+        for (; col > startX; col--) {
+            res[row][col] = count++;
+        }
+        // 左列做下到上（左闭右开）
+        for (; row > startY; row--) {
+            res[row][col] = count++;
+        }
+
+        // 更新起始位置
+        startX++;
+        startY++;
+
+        // 更新offset
+        offset += 2;
+    }
+    // 如果n为奇数的话，需要单独给矩阵最中间的位置赋值
+    if (n % 2 === 1) {
+        res[mid][mid] = count;
+    }
+    return res;
+};
+
+var generateMatrix = function(n){
+    let startX = 0;//起始位置x位置，横向坐标
+    let startY = 0;//起始位置y位置，纵向坐标
+    let loop = Math.floor(n/2);//循环圈数
+    let mid = Math.floor(n/2);//中间位置
+    let count = 1;//填充数字
+    let offset = 1;//每层减少填充元素个数
+    //填充二维数组
+    let res = new Array(n).fill(0).map((item)=>new Array(n).fill(0));
+    while(loop--){
+        //每一层循环的起始位置
+        let x = startX;
+        let y = startY;
+        //上行从左向右（左闭右开）
+        for(;y<startY+n-offset;y++){
+            res[x][y] = count++;
+        }
+        //右列从上到下（左闭右开）
+        for(;x<startX+n-offset;x++){
+            res[x][y] = count++;
+        }
+        //下行从右到左（左闭右开）
+        for(;y>startY;y--){
+            res[x][y] = count++;
+        }
+        //左列从下到上（左闭右开）
+        for(;x>startX;x--){
+            res[x][y] = count++;
+        }
+
+        //下一层循环
+        // 更新起始位置
+        startX++;
+        startY++;
+        // 更新每层减少填充的元素个数
+        offset += 2;
+    }
+    // 如果n是奇数，需要给矩阵中间位置单独赋值
+    if(n%2===1){
+        res[mid][mid] = count;
+    }
+    return res;
+}
+
+
+//17、排序
+//输入:[5,3,6,1,4,2]；输出:[1,2,3,4,5,6]
+//1）选择排序 暴力方法，两个for循环
+//通过比较首先选出最小的数放在第一个位置上，然后在其余的数中选出次小数放在第二个位置上,依此类推,直到所有的数成为有序序列。
+var sortArr = function(arr){
+    for(let i=0;i<arr.length;i++){
+        for(let j = i+1;j<arr.length;j++){
+            if(arr[i]>arr[j]){
+                let num = arr[i]
+                arr[i] = arr[j];
+                arr[j] = num;
+            }
+        }
+    }
+    return arr;
+}
+//2)快速排序  二分法
+// 先从数列中取出一个数作为基准数
+// 分区过程，将比这个数大的数全放到它的右边，小于或等于它的数全放到它的左边
+// 再对左右区间重复第二步，直到各区间只有一个数
+var quickSort = function(arr){
+    if(arr.length<=1) return arr;//递归终止条件
+    let midIndex = Math.floor(arr.length/2);//中间数字下标
+    let mid = arr.splice(midIndex,1)[0];//取出中间的数字
+    let left = [],right = [];
+    for(let i=0;i<arr.length;i++){
+        if(arr[i]<mid){
+            left.push(arr[i]);
+        }else{
+            right.push(arr[i]);
+        }
+    }
+    return quickSort(left).concat([mid],quickSort(right));//递归，再把左数组分成两半进行排序，右数组同理。
+}
+//3）冒泡排序
+var bubbleSort = function(arr){
+    for(let i=0;i<arr.length;i++){
+        for(let j=0;j<arr.length-i-1;j++){
+            if(arr[j]>arr[j+1]){//相邻元素两两对比
+                let num = arr[j];//元素交换   
+                arr[j]=arr[j+1];
+                arr[j+1]=num;
+            }
+        }
+    }
+    return arr;
+}
+
+console.log(bubbleSort([5,3,6,1,4,2]))
+
+

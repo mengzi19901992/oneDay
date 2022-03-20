@@ -123,7 +123,7 @@ shoeObj.trigger("红色", 40);
 shoeObj.trigger("黑色", 42);  
 ```
 
-## 4、列举出集中创建实例的方法
+## 4、列举出几种创建实例的方法
 * 1.字面量
 ```javascript
 let obj={'name':'张三'}
@@ -138,7 +138,6 @@ Obj.name='张三'
 function createPerson(name){
  var o = new Object();
  o.name = name;
- };
  return o; 
 }
 var person1 = createPerson('张三');
@@ -373,7 +372,7 @@ function instance(left,right){
 ```
 typeof与instanceof都是判断数据类型的方法
 typeof会返回一个变量的基本类型，instanceof返回的是一个布尔值
-如果需要通用检测数据类型，可以采用Object.prototype.toString，调用该方法，统一返回格式“[object Xxx]”的字符串
+如果需要通用检测数据类型，可以采用Object.prototype.toString.call(变量)，调用该方法，统一返回格式“[object Xxx]”的字符串
 
 ## 17、 JavaScript 中内存泄漏的几种情况
 内存泄漏（Memory leak）是在计算机科学中，由于疏忽或错误造成程序未能释放已经不再使用的内存

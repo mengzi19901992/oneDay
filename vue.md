@@ -4,7 +4,14 @@
 * 组件化通信的不同。react中我们通过使用回调函数来进行通信的，而Vue中子组件向父组件传递消息有两种方式：事件和回调函数
 * diff算法不同。react主要使用diff队列保存需要更新哪些DOM，得到patch树，再统一操作批量更新DOM。Vue 使用双向指针，边对比，边更新DOM
 
+## 1、 vue3.0你知道有哪些改进？
+vue3 采用了TS来编写
+支持 Composition API
+vue3 中响应式数据原理改成proxy
+vdom 的对比算法更新，只更新vdom 的绑定了动态数据的部分
+
 ## 2、路由hash 模式实现
+https://juejin.cn/post/6844903695365177352
 核心通过监听url中的hash来进行路由跳转
 ```javascript
 // 定义 Router
@@ -117,7 +124,9 @@ Object.assign()：创建一个新的对象，合并原对象和混入对象的�
 $forcecUpdated()：迫使Vue 实例重新渲染，仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件
 * vue3是用过proxy实现数据响应式的，直接动态添加新属性仍可以实现数据响应式
 
+
 ## 7、Vue中的$nextTick怎么理解?
+## 7、vue中的$nextTick怎么理解？
 定义：在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
 我们可以理解成，Vue 在更新 DOM 时是异步执行的。当数据发生变化，Vue将开启一个异步更新队列，视图需要等队列中所有数据变化完成之后，再统一进行更新。
 原理：
@@ -128,9 +137,10 @@ $forcecUpdated()：迫使Vue 实例重新渲染，仅仅影响实例本身和插
 ## 8、列表组件中写 key，其作用是什么？
 key是给每一个vnode的唯一id，也是diff的一种优化策略，可以根据key，更准确， 更快的找到对应的vnode节点。
 
-
-
-
+## 9、剖析Vue原理&实现双向绑定MVVM
+https://segmentfault.com/a/1190000006599500
+VueJS 则使用 ES5 提供的 Object.defineProperty() 方法，监控对数据的操作，从而可以自动触发数据同步。
+vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
 
 
 

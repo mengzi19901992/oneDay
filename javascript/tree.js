@@ -1,26 +1,26 @@
 let treeList = {
-    data:1,
+    val:1,
     left:{
-        data:2,
+        val:2,
         left:{
-            data:4
+            val:4
         },
         right:{
-            data:5
+            val:5
         }
     },
     right:{
-        data:3,
+        val:3,
         left:{
-            data:6,
+            val:6,
             left:{
-                data:8
+                val:8
             }
         },
         right:{
-            data:7,
+            val:7,
             right:{
-                data:9
+                val:9
             }
         }
     }
@@ -30,7 +30,7 @@ let treeList = {
 //先序遍历 递归
 function bftraversal(node){
     if(!node) return;
-    console.log(node.data);
+    // console.log(node.val);
     bftraversal(node.left);
     bftraversal(node.right);
 }
@@ -42,7 +42,7 @@ function forTraversal(node){
     let cur_node = node;
     let stack = [];
     while(cur_node){
-        console.log(cur_node.data);
+        // console.log(cur_node.val);
         if(cur_node.right){
             stack.push(cur_node.right);
         }
@@ -55,9 +55,44 @@ function forTraversal(node){
 }
 forTraversal(treeList);
 
-
-
-
+//中序遍历
+// 前序：根左右 -> 右左根
+// 中序：左根右 -> 右根左
+// 后序：左右根 -> 根右左
+//         1
+//     2       3
+// 4        5
+var inorderTraversal = function(root) {
+    let stack = [],list = [];
+    while(root||stack.length){
+        if(root){
+            stack.push(root)
+            root = root.left;
+        }else{
+            root = stack.pop();
+            list.push(root.val);
+            root = root.right
+        }
+    }
+    return list;
+};
+let List = {
+    val:1,
+    left:{
+        val:2,
+        left:{
+            val:4
+        },
+    },
+    right:{
+        val:3,
+        left:{
+            val:5
+        },
+    }
+}
+const a = inorderTraversal(List)
+console.log(a)
 
 
 

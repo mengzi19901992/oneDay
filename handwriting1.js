@@ -80,3 +80,79 @@ xhr.onreadystatechange = function(){
     }
 }
 
+
+
+
+//防抖
+function debounce(fn,time){
+    let timer =null;
+    return function () {
+        clearTimeout(timer)
+        timer = setTimeout(()=>{
+            fn.apply(this,arguments);
+        },time)
+    }
+}
+//节流，n秒执行一次，每次执行前判断是否执行中
+function throttle(fn,time) {
+    let onOf = false;//变量标记是否执行中
+    return function () {
+        if(!onOf){
+            onOf = true;
+            setTimeout(()=>{
+                fn.apply(this,arguments);
+                onOf = false
+            },time);
+        }
+    }
+}
+
+//call实现
+Function.prototype.myCall = function name(context) {
+    if(typeof this !== 'function'){
+        return;
+    }
+    let args = [...arguments].slice(1),
+    result = null;
+    context = context || window;
+    context.fn = this;
+    result = context.fn(...args);
+    delete context.fn;
+    return result;
+}
+//apply实现
+Function.prototype.myApply = function(context){
+    if(typeof this != 'function'){
+        return;
+    }
+    let args = [...arguments].slice(1),
+    result = null;
+    context = context || window;
+    context.fn = this;
+    result = context.fn(args);
+    delete context.fn;
+    return result;
+}
+//bind实现
+Function.prototype.myBind = function(context){
+    if(typeof this != 'function'){
+        return;
+    }
+    let args = [...arguments].slice(1);
+    let fn = this;
+    return function Fn(){
+        fn.apply(context,args.concat(...arguments));
+    }
+}
+
+//柯里化
+function curry(fn){
+    return function currys(...args){
+        if(fn.length>args.length){
+            return function(){
+                return currys(...args.concat([...arguments]));
+            }
+        }
+        fn(...args);
+    }
+}

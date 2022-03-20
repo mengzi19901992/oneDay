@@ -354,7 +354,7 @@ IE事件模型（基本不用）
 
 ## 16、typeof 与 instanceof 区别
 typeof 操作符返回一个字符串，表示未经计算的操作数的类型 
-instanceof 运算符用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上
+instanceof 运算符用于检测构造函数的 __proto__ 属性是否出现在某个实例对象的原型链上prototype
 ```javascript
 //模拟instanceof
 function instance(left,right){

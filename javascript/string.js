@@ -124,7 +124,7 @@ var leftReverse = function(s,k){
     arr.length = arr.length+k;
     //增加数组长度,把数组前几项后移
     for(let i=0;i<k;i++){
-        arr[len+k] = arr[i];
+        arr[len+i] = arr[i];
         arr[i] = '';
     }
     //双指针，删除多余''//或者使用arr.splice(0,k);

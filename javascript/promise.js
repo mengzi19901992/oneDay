@@ -92,6 +92,24 @@ Promise1.prototype.then = function(onResolve,onReject){
     }
 }
 
+Promise1.all = function(arr){
+    return new promise((resolve,reject)=>{
+        let result = [];
+        let count = 0;
+        arr.forEach(ele=>{
+            ele.then(data=>{
+                result.push(data);
+                count++;
+                if(count == arr.length){
+                    resolve(result);
+                }
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+    })
+}
+
 // let p = new Promise1(function(resolve,reject){
 //     setTimeout(function(){
 //         resolve(2)
